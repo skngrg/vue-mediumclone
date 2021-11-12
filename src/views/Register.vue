@@ -6,7 +6,7 @@
           <h1 class="text-xs-center">Sign up</h1>
           <p class="text-xs-center">
             <router-link :to="{name: 'login'}">
-              Need an account?
+              Have an account?
             </router-link>
           </p>
           <mcv-validation-errors
@@ -53,6 +53,8 @@
 
 <script>
 import McvValidationErrors from '@/components/ValidationErrors'
+import { actionsTypes } from "../store/modules/auth";
+import {mapState} from "vuex";
 
 export default {
   name: 'McvRegister',
@@ -67,18 +69,15 @@ export default {
     }
   },
   computed: {
-    isSubmitting() {
-      return this.$store.state.auth.isSubmitting
-    },
-    validationErrors() {
-      return this.$store.state.auth.validationErrors
-    }
+    ...mapState({
+      isSubmitting: state => state.auth.isSubmitting,
+      validationErrors: state => state.auth.validationErrors
+    })
   },
   methods: {
     onSubmit() {
-      console.log('onSubmit')
       this.$store
-        .dispatch('register', {
+        .dispatch(actionsTypes.register, {
           email: this.email,
           username: this.username,
           password: this.password
@@ -87,10 +86,6 @@ export default {
           this.$router.push({name: 'home'})
         })
     }
-    /* increaseCounter() { */
-    /*   console.log('increaseCounter') */
-    /*   this.$store.commit('increment') */
-    /* } */
   }
 }
 </script>
